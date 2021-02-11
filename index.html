@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" media="all" href="style.css">
+</head>
+<body>
+    <div id="message">
+        <h1 :data="dynamicId">{{dynamicId}}</h1>
+        <a :href="url" :style="{color:'#00F',fontSize:fontSize +'px'}">{{url}}</a><br>
+        <input type="text" v-model="options">
+        {{message}}
+
+        <button @click="age++">age++</button>
+        <button @click="age--">age--</button>
+        <p :style="StyleObj">Current Age: {{age}} </p>
+
+        <input v-model="options" type="checkbox" name="" id="" value="option1">option1
+        <input v-model="options" type="checkbox" name="" id="" value="option2">option2
+        <input v-model="options" type="checkbox" name="" id="" value="option3">option3
+
+        <form action="" @submit.prevent="age++">
+            <input type="submit" value="submit">
+        </form>
+
+        <p :class="isActive?'isActive':'notActive'">you have selected options:{{options.join(', ')}}</p>
+        <p :class={isActive:isActive,isInActive:isInActive}>this is an class Binding</p>
+
+        <button @click="increment">increment</button>
+        <button @click="decrement">decrement</button>
+
+        <p v-if="isInActive">{{message}}</p>
+        <p v-else-if="message === 'Hello Chaitanya!'">Hey Chaitanya what up man!!!</p>
+        <p v-else>No user Found!</p>
+
+        <ul>
+            <li v-for="user in users" :key="user.id">{{user.name}} his is just {{user.age}} years old.</li>
+        </ul>
+
+        <p>{{reversmessage}}</p>
+        <posts data="35"></posts>
+        <!-- inline-template -->
+        <inline inline-template>
+            <h1 @click="display">click me</h1>
+        </inline>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+
+          //component
+          Vue.component('posts',{
+            props:['data'],
+            data(){
+                    return{
+                        users:[
+                            {id:1, title:'se', name:'Chaitanya', age:30},
+                            {id:2, title:'se', name:'pruthvi', age:27},
+                            {id:3, title:'se', name:'siva', age:30},
+                            {id:4, title:'se', name:'surya', age:27}
+                        ],
+                    }
+              },
+            template:`<div>
+                <h1>Hello this is coming from component template!!! {{data}}</h1>
+                    <ul>
+                        <post v-for="user in users" :key="user.id">{{user.name}}</post>
+                    </ul>
+                    </div>
+            `
+          })
+
+          Vue.component('inline',{
+              data(){
+                  return{
+
+                  }
+               },
+               methods:{
+                   display(){
+                       console.log('Hey Hello');
+                   }
+               }
+          })
+
+          Vue.component('post',{
+              data(){
+                    return{
+                        users:[]
+                    }
+              },
+              template:'<li><slot></slot></li>'
+          })
+
+        let vm = new Vue({
+            el:'#message',
+            data:{
+                users:[
+                    {id:1, title:'se', name:'Chaitanya', age:30},
+                    {id:2, title:'se', name:'pruthvi', age:27},
+                    {id:3, title:'se', name:'siva', age:30},
+                    {id:4, title:'se', name:'surya', age:27}
+                ],
+                isActive:true,
+                isInActive:true,
+                fontSize:20,
+                age:0,
+                options:[],
+                StyleObj:{
+                    color:'#F00',
+                    fontSize:'30px'
+                },
+                dynamicId:20,
+                url:'https://www.google.com/',
+                message:"Hello Chaitanya!",
+                
+            },
+            methods:{
+                increment(){
+                    this.fontSize++
+                },
+                decrement(){
+                    this.fontSize--
+                }      
+            },
+            computed:{
+                reversmessage(){
+                    return this.message.split('').reverse('').join('');
+                }
+            },
+            watch:{
+                isActive(newVal){
+                    console.log("value got updated" + newVal);
+                }
+            }
+        })
+
+      
+    </script>
+</body>
+</html>

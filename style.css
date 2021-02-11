@@ -1,0 +1,7 @@
+.isActive{
+    color:#F00;
+}
+.isInActive{
+    color:#999;
+    cursor:not-allowed;
+}
